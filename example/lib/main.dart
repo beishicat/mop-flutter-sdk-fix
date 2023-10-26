@@ -27,7 +27,6 @@ class _MyAppState extends State<MyApp> {
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> init() async {
-
     //多服务器配置
     FinStoreConfig storeConfigA = FinStoreConfig(
       "22LyZEib0gLTQdU3MUauAfJ/xujwNfM6OvvEqQyH4igA",
@@ -37,16 +36,15 @@ class _MyAppState extends State<MyApp> {
     );
 
     FinStoreConfig storeConfigB = FinStoreConfig(
-      "22LyZEib0gLTQdU3MUauAfJ/xujwNfM6OvvEqQyH4igA",
-      "703b9026be3d6bc5",
-      "https://finchat-mop-b.finogeeks.club"
-    );
+        "22LyZEib0gLTQdU3MUauAfJ/xujwNfM6OvvEqQyH4igA",
+        "703b9026be3d6bc5",
+        "https://finchat-mop-b.finogeeks.club");
     List<FinStoreConfig> storeConfigs = [storeConfigA];
     Config config = Config(storeConfigs);
     config.language = LanguageType.English;
     config.baseLoadingViewClass = "LoadingView";
     config.appletDebugMode = BOOLState.BOOLStateTrue;
-    
+
     UIConfig uiconfig = UIConfig();
     uiconfig.isAlwaysShowBackInDefaultNavigationBar = false;
     uiconfig.isClearNavigationBarNavButtonBackground = false;
@@ -87,19 +85,19 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<Map<String, dynamic>> getUserProfile(dynamic params) async {
-  Map<String, dynamic> result = {
-    "userInfo":{
-      "nickName" : "haley",
-      "avatarUrl" : "https://www.finclip.com",
-      "gender" : 1,
-      "country" : "China",
-      "province" : "Guangdong",
-      "city" : "shenzhen",
-    }
-  };
+    Map<String, dynamic> result = {
+      "userInfo": {
+        "nickName": "haley",
+        "avatarUrl": "https://www.finclip.com",
+        "gender": 1,
+        "country": "China",
+        "province": "Guangdong",
+        "city": "shenzhen",
+      }
+    };
 
-  return Future.value(result);
-}
+    return Future.value(result);
+  }
 
   Widget _buildAppletItem(
       String appletId, String itemName, VoidCallback tapAction) {
@@ -152,11 +150,13 @@ class _MyAppState extends State<MyApp> {
                   if (appletId == "5f72e3559a6a7900019b5baa") {
                     style = TranstionStyle.TranstionStylePush;
                   }
-                  RemoteAppletRequest request = RemoteAppletRequest(apiServer: 'https://api.finclip.com', appletId: appletId, transitionStyle: style);
+                  RemoteAppletRequest request = RemoteAppletRequest(
+                      apiServer: 'https://api.finclip.com',
+                      appletId: appletId,
+                      transitionStyle: style);
                   Mop.instance.startApplet(request);
 
                   // Mop.instance.qrcodeOpenApplet('https://api.finclip.com/api/v1/mop/runtime/applet/-f-MGYzN2Q1YTYzMmI2MWIyZg--');
-
                 }),
                 _buildAppletItem(appletId, "finishRunningApplet", () {
                   Mop.instance.finishRunningApplet(appletId, true);
@@ -189,7 +189,6 @@ class _MyAppState extends State<MyApp> {
             _buildAppletWidget("5f72e3559a6a7900019b5baa", "官方小程序"),
             _buildAppletWidget("5f17f457297b540001e06ebb", "api测试小程序"),
             _buildAppletWidget("61386f6484dd160001d3e1ab", "测试小程序"),
-            
           ],
         ),
       ),
@@ -217,16 +216,26 @@ class MyAppletHandler extends AppletHandler {
 
   @override
   Future<List<CustomMenu>> getCustomMenus(String appId) {
-    CustomMenu menu1 = CustomMenu('WXTest', 'https://img1.baidu.com/it/u=2878938773,1765835171&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500', '百度图标', 'common');
-    menu1.darkImage = 'https://img95.699pic.com/xsj/14/46/mh.jpg%21/fw/700/watermark/url/L3hzai93YXRlcl9kZXRhaWwyLnBuZw/align/southeast';
-    
-    CustomMenu menu2 = CustomMenu('CustomMenu2', 'minipro_list_collect', '工程图标', 'common');
+    CustomMenu menu1 = CustomMenu(
+        'WXTest',
+        'https://img1.baidu.com/it/u=2878938773,1765835171&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+        '百度图标',
+        'common');
+    menu1.darkImage =
+        'https://img95.699pic.com/xsj/14/46/mh.jpg%21/fw/700/watermark/url/L3hzai93YXRlcl9kZXRhaWwyLnBuZw/align/southeast';
+
+    CustomMenu menu2 =
+        CustomMenu('CustomMenu2', 'minipro_list_collect', '工程图标', 'common');
     menu2.darkImage = 'minipro_list_service';
 
     List<CustomMenu> customMenus = [
       menu1,
       menu2,
-      CustomMenu('MyFriends', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpvugSNLs9R7iopz_noeotAelvgzYj-74iCg&usqp=CAU', '谷歌图标', 'common'),
+      CustomMenu(
+          'MyFriends',
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpvugSNLs9R7iopz_noeotAelvgzYj-74iCg&usqp=CAU',
+          '谷歌图标',
+          'common'),
       // CustomMenu('WXShareAPPFriends', 'https://img1.baidu.com/it/u=2878938773,1765835171&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500', '微信好朋友', 'common'),
       // CustomMenu('WXShareAPPMoments', 'https://img2.baidu.com/it/u=3113705544,436318069&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500', '微信朋友圈', 'common'),
 
@@ -239,7 +248,7 @@ class MyAppletHandler extends AppletHandler {
   @override
   Future<void> getMobileNumber(Function(dynamic params) callback) {
     // TODO: implement getMobileNumber
-    Map<String, dynamic> result = {"phone": '18607180143',"other":'abc123'};
+    Map<String, dynamic> result = {"phone": '18607180143', "other": 'abc123'};
     print('getMobileNumber:' + result.toString());
     callback(result);
     return Future.value(null);
@@ -249,23 +258,23 @@ class MyAppletHandler extends AppletHandler {
   Future<Map<String, dynamic>> getUserInfo() {
     // TODO: implement getUserInfo
     Map<String, dynamic> result = {
-    "userInfo":{
-      "nickName" : "haley",
-      "avatarUrl" : "https://www.finclip.com",
-      "gender" : 1,
-      "country" : "China",
-      "province" : "Guangdong",
-      "city" : "shenzhen",
-    }
-  };
+      "userInfo": {
+        "nickName": "haley",
+        "avatarUrl": "https://www.finclip.com",
+        "gender": 1,
+        "country": "China",
+        "province": "Guangdong",
+        "city": "shenzhen",
+      }
+    };
 
-  return Future.value(result);
+    return Future.value(result);
   }
 
   @override
-  Future<void> onCustomMenuClick(String appId, String path, String menuId, String appInfo) {
+  Future<void> onCustomMenuClick(
+      String appId, String path, String menuId, String appInfo) {
     // TODO: implement onCustomMenuClick
     throw UnimplementedError();
   }
-
 }
