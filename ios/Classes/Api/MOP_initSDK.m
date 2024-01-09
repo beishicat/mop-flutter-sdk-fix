@@ -63,14 +63,18 @@
     config.h5AjaxHookRequestKey = self.config[@"h5AjaxHookRequestKey"];
     config.pageCountLimit = [self.config[@"pageCountLimit"] integerValue];
     config.schemes = self.config[@"schemes"];
+    config.webViewInspectable = [self.config[@"debug"] boolValue];
     NSInteger languageInteger = [self.config[@"language"] integerValue];
+    if (self.config[@"backgroundFetchPeriod"]) {
+        config.backgroundFetchPeriod = [self.config[@"backgroundFetchPeriod"] integerValue];
+    }
     if (languageInteger == 1) {
         config.language = FATPreferredLanguageEnglish;
     } else {
         config.language = FATPreferredLanguageSimplifiedChinese;
     }
-    
-    
+    config.customLanguagePath = self.config[@"customLanguagePath"];
+        
     NSError* error = nil;
     FATUIConfig *uiconfig = [[FATUIConfig alloc]init];
     if (_uiConfig) {
@@ -104,6 +108,7 @@
         uiconfig.hideRefreshMenu = [_uiConfig[@"isHideRefreshMenu"] boolValue];
         uiconfig.hideFavoriteMenu = [_uiConfig[@"isHideFavoriteMenu"] boolValue];
         uiconfig.hideAddToDesktopMenu = [_uiConfig[@"isHideAddToDesktopMenu"] boolValue];
+        uiconfig.hideClearCacheMenu = [_uiConfig[@"isHideClearCacheMenu"] boolValue];
 
         // 胶囊配置
         if (_uiConfig[@"capsuleConfig"]) {
@@ -256,16 +261,20 @@
         return;
     }
     
+    int logMaxAliveSec = [self.config[@"logMaxAliveSec"] intValue];
+    if (logMaxAliveSec) {
+        [[FATClient sharedClient].logManager setLogFileAliveDuration:logMaxAliveSec];
+    }
+
+    BOOL debug = [self.config[@"debug"] boolValue];
     NSInteger logLevelIntValue = [self.config[@"logLevel"] integerValue];
-    if (logLevelIntValue >= 5) {
-        [[FATClient sharedClient].logManager closeLog];
-    } else {
+    if (debug && logLevelIntValue < 5) {
         FATLogLevel logLevel = logLevelIntValue;
         NSString *logDir = self.config[@"logDir"];
         [[FATClient sharedClient].logManager initLogWithLogDir:logDir logLevel:logLevel consoleLog:YES];
+    } else {
+        [FATClient sharedClient].enableLog = NO;
     }
-    
-    [[FATClient sharedClient] setEnableLog:YES];
     
     success(@{});
     

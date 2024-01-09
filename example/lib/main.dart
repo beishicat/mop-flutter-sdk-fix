@@ -81,8 +81,25 @@ class _MyAppState extends State<MyApp> {
 
     Mop.instance.registerExtensionApi('getUserProfile', getUserProfile);
 
+    Mop.instance.registerExtensionApi('pushNativePage', pushNativePage);
+
     if (!mounted) return;
   }
+
+  Future<Map<String, dynamic>> pushNativePage(dynamic params) async {
+  print(params);
+  Map<String, dynamic> result = {
+    "userInfo":{
+      "nickName" : "haley",
+      "avatarUrl" : "https://www.finclip.com",
+      "gender" : 1,
+      "country" : "China",
+      "province" : "Guangdong",
+      "city" : "shenzhen",
+    }
+  };
+  return Future.value(result);
+}
 
   Future<Map<String, dynamic>> getUserProfile(dynamic params) async {
     Map<String, dynamic> result = {
@@ -270,6 +287,12 @@ class MyAppletHandler extends AppletHandler {
 
     return Future.value(result);
   }
+
+  // @override
+  // Future<Map<String, dynamic>> getUserInfo() {
+  //   // TODO: implement getUserInfo
+  //   throw UnimplementedError();
+  // }
 
   @override
   Future<void> onCustomMenuClick(

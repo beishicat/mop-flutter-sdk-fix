@@ -160,7 +160,6 @@ class Config {
   /// 自定义的scheme数组
   List<String>? schemes;
 
-  /// Android属性
   /// 设置debug模式，影响调试和日志。
   bool debug = false;
 
@@ -195,7 +194,6 @@ class Config {
   /// 日志记录等级
   LogLevel logLevel = LogLevel.LEVEL_NONE;
 
-  /// Android属性
   /// 日志文件最长缓存时间，单位秒。
   /// 最小不能小于1天，即不能小于 1 * 24 * 60 * 60 秒。
   int? logMaxAliveSec;
@@ -210,6 +208,19 @@ class Config {
   /// SDK的语言类型，默认为中文
   LanguageType language = LanguageType.Chinese;
 
+  /// iOS属性
+  /// 自定义SDK的语言，优先级高于内置的 language 属性。
+  /// 示例：
+  /// 如果是放在 mainBundle 下，则设置相对路径：@"abc.lproj"
+  /// 如果是放在自定于 Bundle 下，则设置相对路径：@"bundleName.bundle/abc.lproj"
+  String? customLanguagePath;
+
+  /// Android属性
+  /// 自定义SDK的语言，优先级高于内置的 language 属性。
+  /// 语言列表可以参考：https://uutool.cn/info-i18n/ 或者Java类 【java.util.Locale】
+  /// 示例：简体中文：zh_CN，繁体中文：zh_TW，英文：en
+  String? localeLanguage;
+
   /// Android属性
   /// 是否使用本地加载tbs内核
   bool useLocalTbsCore = false;
@@ -221,6 +232,9 @@ class Config {
   /// Android属性
   /// 是否开启j2v8
   bool enableJ2V8 = false;
+
+  /// 周期性更新的时间间隔(小时), 设置为0不会发起周期性更新请求，接收设置范围为3-12小时
+  int backgroundFetchPeriod = 12;
 
   Config(this.finStoreConfigs);
 
@@ -267,6 +281,9 @@ class Config {
       "useLocalTbsCore": useLocalTbsCore,
       "tbsCoreUrl": tbsCoreUrl,
       "enableJ2V8": enableJ2V8,
+      "customLanguagePath": customLanguagePath,
+      "backgroundFetchPeriod": backgroundFetchPeriod,
+      "localeLanguage": localeLanguage,
     };
   }
 }
@@ -321,11 +338,14 @@ class UIConfig {
   /// 隐藏...弹出菜单中的 【收藏】 菜单
   bool isHideFavoriteMenu = true;
 
-  // 隐藏...弹出菜单中的 【重新进入小程序】 菜单，默认为false
+  /// 隐藏...弹出菜单中的 【重新进入小程序】 菜单，默认为false
   bool isHideRefreshMenu = false;
 
-  // 隐藏...弹出菜单中的 【设置】 菜单，默认为false
+  /// 隐藏...弹出菜单中的 【设置】 菜单，默认为false
   bool isHideSettingMenu = false;
+
+  /// 隐藏...弹出菜单中的 【清理缓存】 菜单，默认为false
+  bool isHideClearCacheMenu = false;
 
   /// 胶囊按钮配置
   CapsuleConfig? capsuleConfig;
@@ -400,6 +420,7 @@ class UIConfig {
       "isHideSettingMenu": isHideSettingMenu,
       "isHideAddToDesktopMenu": isHideAddToDesktopMenu,
       "isHideFavoriteMenu": isHideFavoriteMenu,
+      "isHideClearCacheMenu": isHideClearCacheMenu,
       "hideTransitionCloseButton": hideTransitionCloseButton,
       "capsuleConfig": capsuleConfig?.toMap(),
       "navHomeConfig": navHomeConfig?.toMap(),

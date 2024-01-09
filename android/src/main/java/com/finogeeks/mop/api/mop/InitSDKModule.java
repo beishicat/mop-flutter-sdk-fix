@@ -133,10 +133,17 @@ public class InitSDKModule extends BaseApi {
             configBuilder.setSchemes(schemes);
         }
         configBuilder.setDebugMode((Boolean) configMap.get("debug"));
+        configBuilder.setEnableLog((Boolean) configMap.get("debug"));
         Integer maxRunningApplet = (Integer) configMap.get("maxRunningApplet");
         if (maxRunningApplet != null) {
             configBuilder.setMaxRunningApplet(maxRunningApplet);
         }
+
+        Integer backgroundFetchPeriod = (Integer) configMap.get("backgroundFetchPeriod");
+        if (backgroundFetchPeriod != null) {
+            configBuilder.setBackgroundFetchPeriod(backgroundFetchPeriod);
+        }
+
         Integer webViewMixedContentMode = (Integer) configMap.get("webViewMixedContentMode");
         if (webViewMixedContentMode != null) {
             configBuilder.setWebViewMixedContentMode(webViewMixedContentMode);
@@ -194,11 +201,23 @@ public class InitSDKModule extends BaseApi {
         if (appletText != null) {
             configBuilder.setAppletText(appletText);
         }
-        Integer languageInteger = (Integer) configMap.get("language");
-        if (languageInteger == 1) {
-            configBuilder.setLocale(Locale.ENGLISH);
+
+        Object localeLanguage = configMap.get("localeLanguage");
+        if (localeLanguage != null) {
+            String language = (String) localeLanguage;
+            if (language.contains("_")) {
+                String[] locales = language.split("_");
+                configBuilder.setLocale(new Locale(locales[0], locales[1]));
+            } else {
+                configBuilder.setLocale(new Locale(language));
+            }
         } else {
-            configBuilder.setLocale(Locale.SIMPLIFIED_CHINESE);
+            Integer languageInteger = (Integer) configMap.get("language");
+            if (languageInteger == 1) {
+                configBuilder.setLocale(Locale.ENGLISH);
+            } else {
+                configBuilder.setLocale(Locale.SIMPLIFIED_CHINESE);
+            }
         }
 
         // uiConfig
